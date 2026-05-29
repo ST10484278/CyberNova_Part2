@@ -10,16 +10,10 @@ namespace CyberNova
         {
             InitializeComponent();
 
-            // ASCII ART HEADER
-            AsciiArtBox.Text =
-@"   _____      _               _   _                 
-  / ____|    | |             | \ | |                
- | |    _   _| |__   ___ _ __|  \| | _____   ____ _ 
- | |   | | | | '_ \ / _ \ '__| . ` |/ _ \ \ / / _` |
- | |___| |_| | |_) |  __/ |  | |\  | (_) \ V / (_| |
-  \_____\__, |_.__/ \___|_|  |_| \_|\___/ \_/ \__,_|
-         __/ |                                      
-        |___/                                                                                           ";
+            // STARTUP ONLY (NO LOGIC HERE)
+            AsciiArtBox.Text = bot.GetAsciiArt();
+            bot.PlayGreetingAudio();
+            ChatHistory.AppendText(bot.GetStartupMessage() + "\n\n");
         }
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
@@ -29,19 +23,13 @@ namespace CyberNova
             if (string.IsNullOrWhiteSpace(userInput))
                 return;
 
-            string userName = "User";
+            //string response = bot.GetResponse(userInput, "User");
+            string response = bot.GetResponse(userInput);
 
-            // Show user message
             ChatHistory.AppendText("You: " + userInput + "\n");
-
-            // Get bot response
-            string response = bot.GetResponse(userInput, userName);
-
-            // Show bot message
             ChatHistory.AppendText("CyberNova: " + response + "\n\n");
 
             InputBox.Clear();
-
             ChatHistory.ScrollToEnd();
         }
     }
