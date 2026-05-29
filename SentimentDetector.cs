@@ -23,7 +23,7 @@ namespace CyberNova
             { Sentiment.Happy, new[] { "great", "thanks", "thank you", "helpful", "awesome", "love", "good", "happy" } }
         };
 
-        // ================= DETECT SENTIMENT (STRING OUTPUT FOR CHATBOT) =================
+        // DETECT SENTIMENT 
         public string Detect(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
@@ -45,7 +45,7 @@ namespace CyberNova
             return "neutral";
         }
 
-        // ================= OPTIONAL EMOTIONAL RESPONSE =================
+        // OPTIONAL EMOTIONAL RESPONSE 
         public string GetSentimentResponse(Sentiment sentiment)
         {
             switch (sentiment)

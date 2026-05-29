@@ -10,20 +10,20 @@ namespace CyberNova
         {
             InitializeComponent();
 
-            // ================= STARTUP ONLY =================
+            // STARTUP ONLY 
             AsciiArtBox.Text = bot.GetAsciiArt();
             bot.PlayGreetingAudio();
 
             AddBotMessage(bot.GetGreeting());
         }
 
-        // ================= SEND MESSAGE =================
+        // SEND MESSAGE
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
             SendMessage(InputBox.Text);
         }
 
-        // ================= CORE UI FLOW =================
+        
         private void SendMessage(string userInput)
         {
             if (string.IsNullOrWhiteSpace(userInput))
@@ -32,7 +32,7 @@ namespace CyberNova
             // USER MESSAGE (LEFT SIDE)
             AddUserMessage(userInput);
 
-            // BOT RESPONSE (ALL LOGIC INSIDE CHATBOT)
+            // BOT RESPONSE 
             string response = bot.ProcessInput(userInput);
 
             AddBotMessage(response);

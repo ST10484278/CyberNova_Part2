@@ -24,7 +24,7 @@ namespace CyberNova
             _memoryStore = new MemoryStore();
         }
 
-        // ================= ASCII ART =================
+        // ASCII ART
         public string GetAsciiArt()
         {
             return
@@ -38,7 +38,7 @@ namespace CyberNova
         |___/                                       ";
         }
 
-        // ================= GREETING AUDIO =================
+        //  GREETING AUDIO 
         public void PlayGreetingAudio()
         {
             try
@@ -60,13 +60,13 @@ namespace CyberNova
             }
         }
 
-        // ================= GREETING =================
+        // GREETING 
         public string GetGreeting()
         {
             return "Please enter your name to begin the conversation.";
         }
 
-        // ================= MAIN ENTRY POINT =================
+        //  MAIN ENTRY POINT 
         public string ProcessInput(string userInput)
         {
             if (string.IsNullOrWhiteSpace(userInput))
@@ -74,9 +74,9 @@ namespace CyberNova
 
             string input = userInput.ToLower().Trim();
 
-            // =====================================================
-            // 1. NAME CAPTURE (ONLY ONCE)
-            // =====================================================
+            
+            // NAME CAPTURE (ONLY ONCE)
+            
             if (_awaitingName)
             {
                 _userName = userInput;
@@ -94,9 +94,9 @@ namespace CyberNova
             if (input == "exit")
                 return $"Goodbye {_userName}! Stay safe online.";
 
-            // =====================================================
-            // 2. FOLLOW-UP HANDLING
-            // =====================================================
+            
+            // FOLLOW-UP HANDLING
+            
             if (input.Contains("tell me more") || input.Contains("explain more"))
             {
                 if (!string.IsNullOrEmpty(_lastTopic))
@@ -105,14 +105,14 @@ namespace CyberNova
                 return "What topic would you like me to explain further?";
             }
 
-            // =====================================================
-            // 3. SENTIMENT DETECTION
-            // =====================================================
+            
+            // SENTIMENT DETECTION
+            
             string sentiment = _sentimentDetector.Detect(input);
 
-            // =====================================================
-            // 4. KEYWORD RESPONSE
-            // =====================================================
+          
+            // KEYWORD RESPONSE
+            
             string response = _keywordResponder.GetResponse(input, _userName);
 
             if (!string.IsNullOrEmpty(response))
@@ -127,9 +127,9 @@ namespace CyberNova
                 return response;
             }
 
-            // =====================================================
-            // 5. SPECIAL PHRASES
-            // =====================================================
+            
+            // SPECIAL PHRASES
+            
             if (input.Contains("how are you"))
                 return "I'm doing well, thanks for asking! I'm here to help keep you safe online.";
 
@@ -139,9 +139,9 @@ namespace CyberNova
             if (input == "help")
                 return _keywordResponder.GetResponse("help", _userName);
 
-            // =====================================================
-            // 6. FALLBACK
-            // =====================================================
+            
+            // FALLBACK
+            
             return "I'm not sure I understand. Try asking about cybersecurity topics or type 'help'.";
         }
     }

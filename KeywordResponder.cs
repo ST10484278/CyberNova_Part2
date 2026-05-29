@@ -76,7 +76,7 @@ namespace CyberNova
             return "I'm not sure about that yet, but I can help with cybersecurity topics. Type 'help' to see available options.";
         }
 
-        // ================= FOLLOW-UP RESPONSE (NEW) =================
+        // FOLLOW-UP RESPONSE
         public string GetFollowUpResponse(string topic, string userName)
         {
             if (string.IsNullOrWhiteSpace(topic))
