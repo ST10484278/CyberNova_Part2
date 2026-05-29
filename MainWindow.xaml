@@ -30,7 +30,7 @@
                      IsReadOnly="True"
                      FontFamily="Consolas"
                      Background="#2D2D2D"
-                     Foreground="LightGreen"
+                     Foreground="MediumVioletRed"
                      BorderThickness="0"
                      TextWrapping="Wrap"
                      VerticalScrollBarVisibility="Auto"/>
@@ -39,18 +39,11 @@
 
         <!-- ================= CHAT HISTORY ================= -->
         <ScrollViewer Grid.Row="1"
-                      VerticalScrollBarVisibility="Auto"
-                      Background="#252526">
+              VerticalScrollBarVisibility="Auto"
+              Background="#252526">
 
-            <TextBox x:Name="ChatHistory"
-                     IsReadOnly="True"
-                     AcceptsReturn="True"
-                     TextWrapping="Wrap"
-                     VerticalScrollBarVisibility="Auto"
-                     Background="#252526"
-                     Foreground="White"
-                     BorderThickness="0"/>
-
+            <StackPanel x:Name="ChatPanel"
+                Orientation="Vertical"/>
         </ScrollViewer>
 
         <!-- ================= INPUT AREA ================= -->
@@ -64,7 +57,8 @@
                      Grid.Column="0"
                      Margin="0,5,5,5"
                      FontSize="14"
-                     Padding="5"/>
+                     Padding="5"
+            KeyDown="InputBox_KeyDown"/>
 
             <Button x:Name="SendButton"
                     Grid.Column="1"
