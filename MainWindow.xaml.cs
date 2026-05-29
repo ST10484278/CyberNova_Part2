@@ -10,10 +10,11 @@ namespace CyberNova
         {
             InitializeComponent();
 
-            // STARTUP ONLY (NO LOGIC HERE)
+            // ================= STARTUP ONLY =================
             AsciiArtBox.Text = bot.GetAsciiArt();
             bot.PlayGreetingAudio();
-            ChatHistory.AppendText(bot.GetStartupMessage() + "\n\n");
+
+            ChatHistory.AppendText(bot.GetGreeting() + "\n\n");
         }
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
@@ -23,9 +24,10 @@ namespace CyberNova
             if (string.IsNullOrWhiteSpace(userInput))
                 return;
 
-            //string response = bot.GetResponse(userInput, "User");
-            string response = bot.GetResponse(userInput);
+            // ================= MAIN BOT CALL =================
+            string response = bot.ProcessInput(userInput);
 
+            // ================= DISPLAY =================
             ChatHistory.AppendText("You: " + userInput + "\n");
             ChatHistory.AppendText("CyberNova: " + response + "\n\n");
 

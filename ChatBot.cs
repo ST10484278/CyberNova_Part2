@@ -17,9 +17,11 @@ namespace CyberNova
             // ================= CHAT STATE =================
             private bool _nameCaptured = false;
             private string _userName = "";
+        private bool _awaitingName = true;
+        private string _lastTopic = "";
 
-            // ================= CONSTRUCTOR =================
-            public ChatBot()
+        // ================= CONSTRUCTOR =================
+        public ChatBot()
             {
                 _keywordResponder = new KeywordResponder();
                 _sentimentDetector = new SentimentDetector();
@@ -62,61 +64,84 @@ namespace CyberNova
                 }
             }
 
-            // ================= STARTUP MESSAGE =================
-            public string GetStartupMessage()
+        // ================= GREETING =================
+        public string GetGreeting()
+        {
+            return "Please enter your name to begin the conversation.";
+        }
+
+        // ================= MAIN ENTRY POINT =================
+        public string ProcessInput(string userInput)
+        {
+            if (string.IsNullOrWhiteSpace(userInput))
+                return "Please type something.";
+
+            string input = userInput.ToLower().Trim();
+
+            // =====================================================
+            // 1. HANDLE NAME CAPTURE
+            // =====================================================
+            if (_awaitingName)
             {
-                return "Please enter your name to begin the conversation.";
+                _userName = userInput;
+                _awaitingName = false;
+
+                return $"Hello {_userName}! I am CyberNova, your cybersecurity assistant.\n\n" +
+                       "Type 'help' to see topics\n" +
+                       "Type 'exit' to quit";
             }
 
-            // ================= MAIN RESPONSE METHOD =================
-            public string GetResponse(string userInput)
+            // save memory every interaction
+            _memoryStore.Save(_userName, input);
+
+            // =====================================================
+            // 2. FOLLOW-UP PHRASES
+            // =====================================================
+            if (input.Contains("tell me more") || input.Contains("explain more"))
             {
-                if (string.IsNullOrWhiteSpace(userInput))
+                if (!string.IsNullOrEmpty(_lastTopic))
                 {
-                    return "Please type something.";
+                    return _keywordResponder.GetFollowUpResponse(_lastTopic, _userName);
                 }
 
-                string input = userInput.ToLower().Trim();
+                return "What topic would you like me to explain further?";
+            }
 
-                // ================= FIRST INPUT = USER NAME =================
-                if (!_nameCaptured)
-                {
-                    _userName = userInput;
+            // =====================================================
+            // 3. SENTIMENT DETECTION
+            // =====================================================
+            string sentiment = _sentimentDetector.Detect(input);
 
-                    Thread.Sleep(500);
-
-                    _nameCaptured = true;
-
-                    return
-                        "Hello " + _userName +
-                        "! I am CyberNova, your cybersecurity assistant.\n\n" +
-                        "Type 'help' to see topics\n" +
-                        "Type 'exit' to quit";
-                }
-
-                // ================= SAVE MEMORY =================
-                _memoryStore.Save(_userName, input);
-
-                // ================= EXIT COMMAND =================
-                if (input == "exit")
-                {
-                    return "Goodbye " + _userName + "! Stay safe online.";
-                }
-
-                // ================= SENTIMENT DETECTION =================
-                string sentiment = _sentimentDetector.Detect(input);
-
-                // ================= KEYWORD RESPONSE =================
-                //string response = _keywordResponder.GetResponse(input);
+            // =====================================================
+            // 4. KEYWORD RESPONSE
+            // =====================================================
             string response = _keywordResponder.GetResponse(input, _userName);
-            // ================= SENTIMENT ENHANCEMENT =================
-            if (sentiment == "negative")
+
+            if (!string.IsNullOrEmpty(response))
+            {
+                _lastTopic = input;
+
+                if (sentiment == "negative")
                 {
                     response = "I understand your concern. " + response;
                 }
 
                 return response;
             }
+
+            // =====================================================
+            // 5. SPECIAL PHRASES
+            // =====================================================
+            if (input.Contains("how are you"))
+                return "I'm doing well, thanks for asking! I'm here to help keep you safe online.";
+
+            if (input.Contains("what can you do") || input.Contains("purpose"))
+                return "I help you understand cybersecurity topics like phishing, passwords, malware, and safe browsing.";
+
+            // =====================================================
+            // 6. FALLBACK RESPONSE
+            // =====================================================
+            return "I'm not sure I understand. Try asking about cybersecurity topics or type 'help'.";
         }
     }
-    
+}

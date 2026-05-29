@@ -76,6 +76,38 @@ namespace CyberNova
             return "I'm not sure about that yet, but I can help with cybersecurity topics. Type 'help' to see available options.";
         }
 
+        // ================= FOLLOW-UP RESPONSE (NEW) =================
+        public string GetFollowUpResponse(string topic, string userName)
+        {
+            if (string.IsNullOrWhiteSpace(topic))
+                return "What topic would you like me to explain further?";
+
+            topic = topic.ToLower();
+
+            if (topic.Contains("phishing"))
+                return "Another tip: phishing often creates urgency like 'your account will be closed'. Always pause and verify.";
+
+            if (topic.Contains("password"))
+                return "Extra advice: use a password manager to generate and store strong passwords securely.";
+
+            if (topic.Contains("malware"))
+                return "Also remember: keeping antivirus software updated helps prevent malware infections.";
+
+            if (topic.Contains("ransomware"))
+                return "Important: always back up your files offline to protect yourself from ransomware attacks.";
+
+            if (topic.Contains("scam"))
+                return "Scams often use emotional pressure like fear or excitement to trick victims.";
+
+            if (topic.Contains("privacy"))
+                return "Review app permissions regularly to make sure apps are not accessing unnecessary data.";
+
+            if (topic.Contains("cybersecurity"))
+                return "Cybersecurity also includes safe behaviour like avoiding unknown downloads and using secure networks.";
+
+            // fallback
+            return "I can explain phishing, passwords, malware, scams, or privacy in more detail. Which one interests you?";
+        }
         private string ShowHelpMenu()
         {
             return

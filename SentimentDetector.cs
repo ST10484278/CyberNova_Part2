@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace CyberNova
 {
-    // 1. Enum for all possible sentiments
     public enum Sentiment
     {
         Neutral,
@@ -15,21 +14,20 @@ namespace CyberNova
 
     public class SentimentDetector
     {
-        // 2. Dictionary mapping sentiments to trigger words
         private readonly Dictionary<Sentiment, string[]> _triggers =
             new Dictionary<Sentiment, string[]>
         {
             { Sentiment.Worried, new[] { "worried", "scared", "afraid", "anxious", "nervous", "unsafe" } },
             { Sentiment.Curious, new[] { "curious", "wondering", "interested", "want to know", "how does" } },
             { Sentiment.Frustrated, new[] { "frustrated", "annoyed", "confused", "don't understand", "dont understand" } },
-            { Sentiment.Happy, new[] { "great", "thanks", "helpful", "awesome", "love", "good", "happy" } }
+            { Sentiment.Happy, new[] { "great", "thanks", "thank you", "helpful", "awesome", "love", "good", "happy" } }
         };
 
-        // 3. Detect sentiment from input text
-        public Sentiment Detect(string input)
+        // ================= DETECT SENTIMENT (STRING OUTPUT FOR CHATBOT) =================
+        public string Detect(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
-                return Sentiment.Neutral;
+                return "neutral";
 
             input = input.ToLower();
 
@@ -39,15 +37,15 @@ namespace CyberNova
                 {
                     if (input.Contains(keyword))
                     {
-                        return entry.Key;
+                        return entry.Key.ToString().ToLower();
                     }
                 }
             }
 
-            return Sentiment.Neutral;
+            return "neutral";
         }
 
-        // 4. Optional: empathetic response generator
+        // ================= OPTIONAL EMOTIONAL RESPONSE =================
         public string GetSentimentResponse(Sentiment sentiment)
         {
             switch (sentiment)
